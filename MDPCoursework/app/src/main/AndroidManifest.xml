@@ -14,19 +14,23 @@
 
         <activity
             android:name=".SplashScreen"
-            android:configChanges="keyboardHidden|screenSize"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_splash_screen"
-            android:theme="@style/FullscreenTheme">
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".MainActivity"></activity>
         <activity
             android:name=".DataDetails"
             android:label="@string/title_activity_data_details"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
+    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
 </manifest>

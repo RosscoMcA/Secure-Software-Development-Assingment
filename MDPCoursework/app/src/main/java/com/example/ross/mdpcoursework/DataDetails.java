@@ -7,6 +7,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+/**
+ * Created by Ross McArthur
+ * Matriculation Number: S1429389
+ */
 public class DataDetails extends AppCompatActivity {
 
     @Override
