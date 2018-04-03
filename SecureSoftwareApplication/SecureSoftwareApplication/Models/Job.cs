@@ -1,0 +1,51 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Web;
+
+namespace SecureSoftwareApplication.Models
+{
+
+    /// <summary>
+    /// Model represents the details of the Job Table
+    /// </summary>
+    public class Job
+    {
+        [Key]
+        public int JobID { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
+        public DateTime Start { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
+        public DateTime End { get; set; }
+
+        public JobType Type { get; set; }
+
+        public State state { get; set; }
+
+        public bool authorised { get; set; }
+
+        public bool isPublic { get; set; }
+
+        public Destination Destination {get;set;}
+
+        public virtual Account Author { get; set; }
+
+        public virtual ICollection<JobTransaction> Files { get; set; }
+
+
+
+    }
+
+    public enum JobType { Continous, Once, Periodical}
+
+    public enum State { Sleeping, Paused, Failed, Hanged, Stopped, Active}
+
+    public enum Destination { NY, Tokyo, HongKong, Singapore}
+
+
+}
