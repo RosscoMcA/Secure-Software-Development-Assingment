@@ -10,9 +10,9 @@ using SecureSoftwareApplication.Models;
 
 namespace SecureSoftwareApplication.Controllers
 {
-    public class FilesController : Controller
+    public class FilesController : RootController
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        
 
         // GET: Files
         public ActionResult Index()
