@@ -11,6 +11,9 @@ namespace SecureSoftwareApplication.Models
     /// </summary>
     public class JobTransaction
     {
+        [Key]
+        public string id { get; set; }
+
         public virtual Job Job { get; set; }
 
         public virtual File File { get; set; }

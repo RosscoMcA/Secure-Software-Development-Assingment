@@ -13,7 +13,7 @@ using SecureSoftwareApplication.Models;
 namespace SecureSoftwareApplication.Controllers
 {
     [Authorize]
-    public class AccountController : Controller
+    public class AccountController : RootController
     {
         public ApplicationSignInManager _signInManager;
         public ApplicationUserManager _userManager;
@@ -21,6 +21,58 @@ namespace SecureSoftwareApplication.Controllers
         public AccountController()
         {
         }
+
+        //
+        // GET: /Account/Register
+
+        public ActionResult Register()
+        {
+
+            if (!isAdmin())
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            return View();
+        }
+
+        //
+        // POST: /Account/Register
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Register(RegisterViewModel model)
+        {
+
+            if (!isAdmin())
+                return RedirectToAction("Index", "Home");
+
+            if (ModelState.IsValid)
+            {
+                var user = new Account
+                {
+                    UserName = model.Email,
+                    Email = model.Email,
+                    PhoneNumber = model.PhoneNumber,
+                    AccountType = model.AccountType
+                };
+                var result = await UserManager.CreateAsync(user, model.Password);
+                if (result.Succeeded)
+                {
+
+                    // Send an email with this link
+                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+
+                    return RedirectToAction("List", "Account");
+                }
+                AddErrors(result);
+            }
+
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
+
 
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
         {

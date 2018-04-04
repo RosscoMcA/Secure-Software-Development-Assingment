@@ -65,6 +65,10 @@ namespace SecureSoftwareApplication.Models
     public class RegisterViewModel
     {
         [Required]
+        [Display(Name ="Username")]
+        public string Username { get; set; }
+
+        [Required]
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
@@ -75,10 +79,18 @@ namespace SecureSoftwareApplication.Models
         [Display(Name = "Password")]
         public string Password { get; set; }
 
+        [Required]
+        [DataType(DataType.PhoneNumber)]
+        [StringLength(11, ErrorMessage ="The phone number does not match the required length", MinimumLength =11)]
+        [Display(Name = "Phone Number")]
+        public string PhoneNumber { get; set; }
+
         [DataType(DataType.Password)]
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        public AccountType AccountType { get; set; }
     }
 
     public class ResetPasswordViewModel

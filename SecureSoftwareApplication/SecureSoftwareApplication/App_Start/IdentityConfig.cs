@@ -11,6 +11,9 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using SecureSoftwareApplication.Models;
+using System.Configuration;
+using Twilio;
+
 
 namespace SecureSoftwareApplication
 {
@@ -23,11 +26,30 @@ namespace SecureSoftwareApplication
         }
     }
 
+ 
+
+    /// <summary>
+    /// Service handles the send of and 
+    /// </summary>
     public class SmsService : IIdentityMessageService
     {
+
+        /// <summary>
+        /// Conducts the sending of SMS Messages to a number
+        /// </summary>
+        /// <param name="message">The Message to send</param>
+        /// <returns>THe status of the message sent</returns>
         public Task SendAsync(IdentityMessage message)
         {
-            // Plug in your SMS service here to send a text message.
+            ///Creates the service and its credentials that are required
+            var Twilio = new TwilioRestClient(
+               ConfigurationManager.AppSettings["SMSAccountIdentification"],
+               ConfigurationManager.AppSettings["SMSAccountPassword"]);
+
+            ///Sends the message
+            var res = Twilio.SendMessage(
+                ConfigurationManager.AppSettings["SMSFrom"], message.Destination, message.Body);
+
             return Task.FromResult(0);
         }
     }
@@ -71,11 +93,7 @@ namespace SecureSoftwareApplication
             {
                 MessageFormat = "Your security code is {0}"
             });
-            manager.RegisterTwoFactorProvider("Email Code", new EmailTokenProvider<ApplicationUser>
-            {
-                Subject = "Security Code",
-                BodyFormat = "Your security code is {0}"
-            });
+            
             manager.EmailService = new EmailService();
             manager.SmsService = new SmsService();
             var dataProtectionProvider = options.DataProtectionProvider;

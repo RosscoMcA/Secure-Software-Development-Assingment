@@ -11,7 +11,7 @@ using SecureSoftwareApplication.Models;
 namespace SecureSoftwareApplication.Controllers
 {
     [Authorize]
-    public class ManageController : Controller
+    public class ManageController : RootController
     {
         public ApplicationSignInManager _signInManager;
         public ApplicationUserManager _userManager;
@@ -32,7 +32,7 @@ namespace SecureSoftwareApplication.Controllers
             {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            public set 
+            set 
             { 
                 _signInManager = value; 
             }
@@ -44,7 +44,7 @@ namespace SecureSoftwareApplication.Controllers
             {
                 return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
             }
-            public set
+            set
             {
                 _userManager = value;
             }
@@ -276,6 +276,8 @@ namespace SecureSoftwareApplication.Controllers
             return View(model);
         }
 
+
+        
         //
         // GET: /Manage/ManageLogins
         public async Task<ActionResult> ManageLogins(ManageMessageId? message)
