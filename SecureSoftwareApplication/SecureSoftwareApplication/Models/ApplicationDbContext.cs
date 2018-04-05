@@ -28,6 +28,6 @@ namespace SecureSoftwareApplication.Models
             return new ApplicationDbContext();
         }
 
-        public System.Data.Entity.DbSet<SecureSoftwareApplication.Models.Account> ApplicationUsers { get; set; }
+        
     }
 }

@@ -21,21 +21,25 @@ namespace SecureSoftwareApplication.Controllers
         // GET: AdminOptions
         public ActionResult Index()
         {
-            if (!isAdmin())
+            if (isAdmin() == false || getAccount() == null)
             {
-                return RedirectToAction("Index", "Home");
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden, "You are not allowed here");
             }
-            return View(db.ApplicationUsers.ToList());
+            return View(db.Accounts.ToList());
         }
 
         // GET: AdminOptions/Details/5
         public ActionResult Details(string id)
         {
+            if (isAdmin() == false || getAccount() == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden, "You are not allowed here");
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Account account = db.ApplicationUsers.Find(id);
+            Account account = db.Accounts.Find(id);
             if (account == null)
             {
                 return HttpNotFound();
@@ -56,11 +60,17 @@ namespace SecureSoftwareApplication.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Email,EmailConfirmed,PasswordHash,SecurityStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEndDateUtc,LockoutEnabled,AccessFailedCount,UserName,AccountType")] Account account)
+        public ActionResult Create([Bind(Include = "Email,Name,PhoneNumber,UserName,AccountType")] Account account)
         {
+
+            if (isAdmin() == false || getAccount() == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden, "You are not allowed here");
+            }
+
             if (ModelState.IsValid)
             {
-                db.ApplicationUsers.Add(account);
+                db.Accounts.Add(account);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -71,11 +81,16 @@ namespace SecureSoftwareApplication.Controllers
         // GET: AdminOptions/Edit/5
         public ActionResult Edit(string id)
         {
+
+            if (isAdmin() == false || getAccount() == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden, "You are not allowed here");
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Account account = db.ApplicationUsers.Find(id);
+            Account account = db.Accounts.Find(id);
             if (account == null)
             {
                 return HttpNotFound();
@@ -88,8 +103,14 @@ namespace SecureSoftwareApplication.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Email,EmailConfirmed,PasswordHash,SecurityStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEndDateUtc,LockoutEnabled,AccessFailedCount,UserName,AccountType")] Account account)
+        public ActionResult Edit([Bind(Include = "Email, Name, PhoneNumber, UserName,AccountType")] Account account)
         {
+
+            if (isAdmin() == false || getAccount() == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden, "You are not allowed here");
+            }
+
             if (ModelState.IsValid)
             {
                 db.Entry(account).State = EntityState.Modified;
@@ -102,11 +123,17 @@ namespace SecureSoftwareApplication.Controllers
         // GET: AdminOptions/Delete/5
         public ActionResult Delete(string id)
         {
+
+            if (isAdmin() == false || getAccount() == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden, "You are not allowed here");
+            }
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Account account = db.ApplicationUsers.Find(id);
+            Account account = db.Accounts.Find(id);
             if (account == null)
             {
                 return HttpNotFound();
@@ -119,8 +146,12 @@ namespace SecureSoftwareApplication.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string id)
         {
-            Account account = db.ApplicationUsers.Find(id);
-            db.ApplicationUsers.Remove(account);
+            if (isAdmin() == false || getAccount() == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden, "You are not allowed here");
+            }
+            Account account = db.Accounts.Find(id);
+            db.Accounts.Remove(account);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
@@ -130,13 +161,18 @@ namespace SecureSoftwareApplication.Controllers
         /// </summary>
         /// <param name="id">the user to promote's ID</param>
         /// <returns>return to list page</returns>
-        public ActionResult PromoteUser(string id)
+        public ActionResult Promote(string id)
         {
-            var account = db.ApplicationUsers.Find(id);
+            if (isAdmin() == false || getAccount() == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden, "You are not allowed here");
+            }
+
+            var account = db.Accounts.Find(id);
             if (account != null)
             {
                 account.AccountType = AccountType.Admin;
-                db.ApplicationUsers.AddOrUpdate(account);
+                db.Accounts.AddOrUpdate(account);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -149,13 +185,19 @@ namespace SecureSoftwareApplication.Controllers
         /// </summary>
         /// <param name="id">the user to demote's ID</param>
         /// <returns>return to list page</returns>
-        public ActionResult DemoteUser(string id)
+        public ActionResult Demote(string id)
         {
-            var account = db.ApplicationUsers.Find(id);
+
+            if (isAdmin() == false || getAccount() == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden, "You are not allowed here");
+            }
+
+            var account = db.Accounts.Find(id);
             if (account != null)
             {
                 account.AccountType = AccountType.Employee;
-                db.ApplicationUsers.AddOrUpdate(account);
+                db.Accounts.AddOrUpdate(account);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

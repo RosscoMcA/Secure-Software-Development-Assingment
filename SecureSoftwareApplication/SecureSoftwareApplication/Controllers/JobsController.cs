@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using SecureSoftwareApplication.Models;
+using System.Data.Entity.Migrations;
 
 namespace SecureSoftwareApplication.Controllers
 {
@@ -17,11 +18,17 @@ namespace SecureSoftwareApplication.Controllers
         // GET: Jobs
         public ActionResult Index()
         {
-            if (getAccount() != null)
+            if (getAccount() != null&& isAdmin()==false)
             {
-                var jobs = db.Jobs.Where(q => q.Author.Id == getAccount().Id);
-                return View(db.Jobs.ToList());
+                var jobs = db.Jobs.Where(q => q.Author.Id == getAccount().Id || q.isPublic);
+                return View(jobs);
 
+            }
+            if (isAdmin())
+            {
+                var jobs = db.Jobs.Where(q => q.authorised==false);
+                
+                return View(jobs);
             }
             else
             {
@@ -101,6 +108,8 @@ namespace SecureSoftwareApplication.Controllers
         // GET: Jobs/Delete/5
         public ActionResult Delete(int? id)
         {
+            
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -121,6 +130,58 @@ namespace SecureSoftwareApplication.Controllers
             Job job = db.Jobs.Find(id);
             db.Jobs.Remove(job);
             db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult Authorise(int id)
+        {
+            if (isAdmin() == false|| getAccount()==null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden, "You are not allowed here");
+            }
+            else
+            {
+                var job = db.Jobs.Find(id);
+
+                if (job != null)
+                {
+                    job.authorised = true;
+
+                    db.Jobs.AddOrUpdate(job);
+
+                    db.SaveChanges();
+
+                    
+                }
+            }
+
+            return RedirectToAction("Index");
+
+        }
+
+
+        public ActionResult Deny (int id)
+        {
+            if (isAdmin() == false || getAccount() == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden, "You are not allowed here");
+            }
+            else
+            {
+                var job = db.Jobs.Find(id);
+
+                if (job != null)
+                {
+
+
+                    db.Jobs.Remove(job);
+
+                    db.SaveChanges();
+
+
+                }
+            }
+
             return RedirectToAction("Index");
         }
 

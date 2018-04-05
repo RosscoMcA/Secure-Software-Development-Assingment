@@ -6,10 +6,21 @@ using System.Web.Mvc;
 
 namespace SecureSoftwareApplication.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : RootController
     {
         public ActionResult Index()
         {
+
+            ViewBag.isAdmin = isAdmin();
+
+            if (getAccount() != null)
+            {
+                ViewBag.IsLoggedIn = true; 
+            }
+            else
+            {
+                ViewBag.IsLoggedIn = false;
+            }
             return View();
         }
 
