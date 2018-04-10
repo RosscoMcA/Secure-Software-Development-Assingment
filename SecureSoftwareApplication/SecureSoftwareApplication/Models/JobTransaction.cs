@@ -12,7 +12,7 @@ namespace SecureSoftwareApplication.Models
     public class JobTransaction
     {
         [Key]
-        public string id { get; set; }
+        public int id { get; set; }
 
         public virtual Job Job { get; set; }
 

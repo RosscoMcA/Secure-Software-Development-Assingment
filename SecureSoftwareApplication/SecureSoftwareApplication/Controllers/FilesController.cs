@@ -7,6 +7,8 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using SecureSoftwareApplication.Models;
+using System.Data.Entity.Migrations;
+using SecureSoftwareApplication.Services;
 
 namespace SecureSoftwareApplication.Controllers
 {
@@ -15,13 +17,22 @@ namespace SecureSoftwareApplication.Controllers
         
 
         // GET: Files
-        public ActionResult Index()
+        public ActionResult Index(int id)
         {
-            return View(db.Files.ToList());
+            var transactions = db.Transactions.Where(f => f.Job.JobID == id);
+            List<File> files = new List<Models.File>();
+
+            ViewBag.Job = id;
+
+            foreach(var transaction in transactions)
+            {
+                files.Add(transaction.File);
+            }
+            return View(files);
         }
 
         // GET: Files/Details/5
-        public ActionResult Details(int? id)
+        public ActionResult Details(int id)
         {
             if (id == null)
             {
@@ -36,26 +47,92 @@ namespace SecureSoftwareApplication.Controllers
         }
 
         // GET: Files/Create
-        public ActionResult Create()
+        public ActionResult Create(int id)
         {
-            return View();
+            var job = db.Jobs.Find(id);
+
+            if (job != null || job.closed==true)
+            {
+                FileViewModel file = new FileViewModel
+                {
+                    job = job.JobID
+
+                };
+                return View(file);
+            }
+
+            else
+            {
+                return RedirectToAction("Home", "Index");
+            }
+
+
+
+            
         }
 
         // POST: Files/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "FileID,Contents,PubDate,Source,Folder,Name,TimeStamp")] File file)
+        public ActionResult Create(FileViewModel files)
         {
             if (ModelState.IsValid)
             {
-                db.Files.Add(file);
+                File addFile = new Models.File()
+                {
+                    Contents = files.Contents,
+                    Name = files.Name,
+                    Folder = files.Folder,
+                    PubDate = DateTime.Now.Date,
+                    TimeStamp = DateTime.Now.Date, 
+                    Size = 0
+                };
+
+                // Files is looking for the corresponding ID in the view
+                HttpPostedFileBase content = Request.Files["file"];
+
+                //calculates the size of the file to Mb 
+                int size = (content.ContentLength / 1024) / 1024;
+
+                addFile.Size = size;
+
+                if (content != null)
+                {
+                    FileStorageService fss = new FileStorageService();
+
+                    addFile.Source = fss.Upload(content);
+                }
+
+
+
+
+                db.Files.Add(addFile);
+
+
+                var job = db.Jobs.Find(files.job);
+
+                JobTransaction jt = new JobTransaction()
+                {
+
+                    File = addFile,
+                    Job = job ,
+                    TimeStamp = DateTime.Now.Date, 
+                };
+
+
                 db.SaveChanges();
-                return RedirectToAction("Index");
+
+                db.Transactions.AddOrUpdate(jt);
+
+                db.SaveChanges();
+
+                return RedirectToAction("Index", "JobTransactions", new { id = files.job });
             }
 
-            return View(file);
+            return View(files);
         }
 
         // GET: Files/Edit/5

@@ -233,6 +233,7 @@
     <Compile Include="Controllers\AdminOptionsController.cs" />
     <Compile Include="Controllers\FilesController.cs" />
     <Compile Include="Controllers\JobsController.cs" />
+    <Compile Include="Controllers\JobTransactionsController.cs" />
     <Compile Include="Controllers\RootController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -244,6 +245,7 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\File.cs" />
+    <Compile Include="Models\FileViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Job.cs" />
     <Compile Include="Models\JobTransaction.cs" />
@@ -328,6 +330,11 @@
     <Content Include="Views\Files\Details.cshtml" />
     <Content Include="Views\Files\Edit.cshtml" />
     <Content Include="Views\Files\Index.cshtml" />
+    <Content Include="Views\JobTransactions\Create.cshtml" />
+    <Content Include="Views\JobTransactions\Delete.cshtml" />
+    <Content Include="Views\JobTransactions\Details.cshtml" />
+    <Content Include="Views\JobTransactions\Edit.cshtml" />
+    <Content Include="Views\JobTransactions\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

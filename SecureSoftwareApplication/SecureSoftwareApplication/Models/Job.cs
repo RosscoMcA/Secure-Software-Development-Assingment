@@ -31,6 +31,8 @@ namespace SecureSoftwareApplication.Models
 
         public bool isPublic { get; set; }
 
+        public bool closed { get; set; }
+
         public Destination Destination {get;set;}
 
         public virtual Account Author { get; set; }

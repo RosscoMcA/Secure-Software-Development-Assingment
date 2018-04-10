@@ -26,6 +26,8 @@ namespace SecureSoftwareApplication.Models
 
         public string Name { get; set; }
 
+        public int Size { get; set; }
+
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         public DateTime TimeStamp { get; set; }

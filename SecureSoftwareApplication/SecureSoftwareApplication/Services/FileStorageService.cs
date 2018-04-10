@@ -7,10 +7,18 @@ using System.Web;
 
 namespace SecureSoftwareApplication.Services
 {
+    /// <summary>
+    /// Class handles the file storage service for storing files before they can be sent accross for updates to other repositories
+    /// </summary>
     public class FileStorageService
     {
-        private const string bucketName = "SecureSoftware";
+        private const string bucketName = "securesoftware";
 
+        /// <summary>
+        /// Adds a new file to the file storage service 
+        /// </summary>
+        /// <param name="file">The file to add to the store </param>
+        /// <returns>The key of the item stored on the cloud</returns>
         public string Upload(HttpPostedFileBase file)
         {
 

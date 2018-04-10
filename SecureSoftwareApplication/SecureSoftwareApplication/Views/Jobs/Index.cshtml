@@ -59,15 +59,17 @@
             @Html.DisplayFor(modelItem => item.Destination)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.JobID }) |
+            
             @Html.ActionLink("Details", "Details", new { id=item.JobID }) |
             @Html.ActionLink("Delete", "Delete", new { id=item.JobID })|
             
-            @if (ViewBag.isAdmin)
-            {
-                @Html.ActionLink("Authorise", "Authorise", new { id = item.JobID })|
+          
+             @if (ViewBag.isAdmin)
+             {
+                @Html.ActionLink("Authorise", "Authorise", new { id = item.JobID })
                 @Html.ActionLink("Deny", "Deny", new { id = item.JobID })
-            }
+             }
+            
         </td>
     </tr>
 }

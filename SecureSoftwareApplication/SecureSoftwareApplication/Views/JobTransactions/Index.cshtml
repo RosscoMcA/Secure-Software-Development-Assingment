@@ -1,0 +1,33 @@
+﻿@model IEnumerable<SecureSoftwareApplication.Models.JobTransaction>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+
+@Html.ActionLink("Create New", "Create", "Files", new {id = ViewBag.Job}, null)
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.File.Name)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.File.Name)
+        </td>
+        
+    </tr>
+}
+
+    
+
+</table>
+
+@Html.ActionLink("Submit Job", "Finalise",new { id = ViewBag.Job })

@@ -13,22 +13,36 @@ namespace SecureSoftwareApplication.Controllers
 {
     public class JobsController : RootController
     {
-       
+
+               
 
         // GET: Jobs
+        
         public ActionResult Index()
         {
-            if (getAccount() != null&& isAdmin()==false)
-            {
-                var jobs = db.Jobs.Where(q => q.Author.Id == getAccount().Id || q.isPublic);
-                return View(jobs);
+            ViewBag.isAdmin = isAdmin();
 
-            }
-            if (isAdmin())
+            var account = getAccount();
+
+            if (account != null)
             {
-                var jobs = db.Jobs.Where(q => q.authorised==false);
-                
-                return View(jobs);
+                if (isAdmin() == false)
+                {
+                    var jobs = db.Jobs.Where(q => q.Author.Id == account.Id || q.isPublic).ToList();
+                    return View(jobs);
+
+                }
+                if (isAdmin())
+                {
+                    var jobs = db.Jobs.Where(q => q.authorised == false);
+
+                    return View(jobs);
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+
             }
             else
             {
@@ -66,9 +80,10 @@ namespace SecureSoftwareApplication.Controllers
         {
             if (ModelState.IsValid)
             {
+                job.Author = getAccount();
                 db.Jobs.Add(job);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Files", new { id = job.JobID });
             }
 
             return View(job);
@@ -133,6 +148,7 @@ namespace SecureSoftwareApplication.Controllers
             return RedirectToAction("Index");
         }
 
+        [Authorize]
         public ActionResult Authorise(int id)
         {
             if (isAdmin() == false|| getAccount()==null)
@@ -159,7 +175,7 @@ namespace SecureSoftwareApplication.Controllers
 
         }
 
-
+        [Authorize]
         public ActionResult Deny (int id)
         {
             if (isAdmin() == false || getAccount() == null)
@@ -173,7 +189,13 @@ namespace SecureSoftwareApplication.Controllers
                 if (job != null)
                 {
 
+                    var jt = db.Transactions.Where(r => r.Job.JobID == job.JobID).ToList();
 
+                    foreach(var transaction in jt)
+                    {
+                        db.Transactions.Remove(transaction);
+                        db.SaveChanges();
+                    }
                     db.Jobs.Remove(job);
 
                     db.SaveChanges();
