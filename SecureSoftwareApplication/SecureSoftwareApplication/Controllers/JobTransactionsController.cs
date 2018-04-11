@@ -15,6 +15,12 @@ namespace SecureSoftwareApplication.Controllers
 
         public ActionResult Finalise(int id)
         {
+
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
             var job = db.Jobs.Find(id);
 
             foreach (var item in job.Files.ToList())
@@ -39,7 +45,7 @@ namespace SecureSoftwareApplication.Controllers
             }
             else
             {
-                return RedirectToAction("Index", "Home");
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
         }
 
