@@ -50,21 +50,22 @@ namespace SecureSoftwareApplication.Controllers
             {
                 var user = new Account
                 {
-                    UserName = model.Email,
+                    UserName = model.Username,
                     Email = model.Email,
                     PhoneNumber = model.PhoneNumber,
-                    AccountType = model.AccountType
+                    AccountType = model.AccountType,
+                    Name= model.Name
                 };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
 
                     // Send an email with this link
-                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                     string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                     var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                     await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
-                    return RedirectToAction("List", "Account");
+                    return RedirectToAction("Index", "AdminOptions");
                 }
                 AddErrors(result);
             }

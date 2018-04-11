@@ -13,18 +13,54 @@ using Microsoft.Owin.Security;
 using SecureSoftwareApplication.Models;
 using System.Configuration;
 using Twilio;
-
+using SendGrid;
+using SendGrid.Helpers.Mail;
+using SecureSoftwareApplication;
 
 namespace SecureSoftwareApplication
 {
     public class EmailService : IIdentityMessageService
     {
+        /// <summary>
+        /// Handles the sending of emails
+        /// </summary>
+        /// <param name="message">The message to be sent</param>
+        /// <returns>The Status of the task being sent</returns>
         public Task SendAsync(IdentityMessage message)
         {
-            // Plug in your email service here to send an email.
-            return Task.FromResult(0);
+
+            return configSendGridAsync(message);
+        }
+
+        /// <summary>
+        /// 
+        /// Conducts the sending of emails to an email address
+        /// </summary>
+        /// <param name="message">message details</param>
+        /// <returns>The Status of sent item</returns>
+        public Task configSendGridAsync(IdentityMessage message)
+        {
+
+            var client = new SendGridClient("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");
+            var SGMessage = new SendGrid.Helpers.Mail.SendGridMessage()
+            {
+                From = new EmailAddress(
+                                "autoconfirm@fxtraders.com", "FX Traders"),
+                Subject = message.Subject,
+                PlainTextContent = message.Body,
+                HtmlContent = message.Body
+
+            };
+            SGMessage.AddTo(new EmailAddress(message.Destination));
+
+            var response = client.SendEmailAsync(SGMessage);
+
+
+            return response;
+
         }
     }
+}
 
  
 
@@ -93,9 +129,9 @@ namespace SecureSoftwareApplication
             {
                 MessageFormat = "Your security code is {0}"
             });
-            
-            manager.EmailService = new EmailService();
-            manager.SmsService = new SmsService();
+
+        manager.EmailService = new EmailService();
+        manager.SmsService = new SmsService();
             var dataProtectionProvider = options.DataProtectionProvider;
             if (dataProtectionProvider != null)
             {
@@ -124,4 +160,3 @@ namespace SecureSoftwareApplication
             return new ApplicationSignInManager(context.GetUserManager<ApplicationUserManager>(), context.Authentication);
         }
     }
-}

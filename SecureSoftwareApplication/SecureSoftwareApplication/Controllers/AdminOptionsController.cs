@@ -10,6 +10,8 @@ using SecureSoftwareApplication.Models;
 using System.Data.Entity.Migrations;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin.Security.DataProtection;
 
 namespace SecureSoftwareApplication.Controllers
 {
@@ -53,7 +55,7 @@ namespace SecureSoftwareApplication.Controllers
         // GET: AdminOptions/Create
         public ActionResult Create()
         {
-            return View();
+            return RedirectToAction("Register", "Account");
         }
 
 
@@ -89,13 +91,15 @@ namespace SecureSoftwareApplication.Controllers
                 var userCreateResult = UserManager.Create(finalAccount, account.Password);
                 if (userCreateResult.Succeeded)
                 {
-
+                    var client = new DpapiDataProtectionProvider("ASP.NET Identity");
+                    UserManager.UserTokenProvider = new DataProtectorTokenProvider<Account>(
+                    client.Create("ASP.NET Identity"));
                     // Send an email with this link
                     string code = await UserManager.GenerateEmailConfirmationTokenAsync(finalAccount.Id);
                     var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = finalAccount.Id, code = code }, protocol: Request.Url.Scheme);
                     await UserManager.SendEmailAsync(finalAccount.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
-                    return RedirectToAction("List", "Account");
+                    return RedirectToAction("Index");
                 }
 
 
