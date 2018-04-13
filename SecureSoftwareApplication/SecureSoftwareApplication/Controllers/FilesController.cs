@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using SecureSoftwareApplication.Models;
 using System.Data.Entity.Migrations;
 using SecureSoftwareApplication.Services;
+using SecureSoftwareApplication.Extensions;
 
 namespace SecureSoftwareApplication.Controllers
 {
@@ -19,10 +20,15 @@ namespace SecureSoftwareApplication.Controllers
         // GET: Files
         public ActionResult Index(int id)
         {
-
+            if (getAccount() == null)
+            {
+                this.AddNotification("Sorry! You are not allowed to access this page", NotificationType.ERROR);
+                return RedirectToAction("Home", "Index");
+            }
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                this.AddNotification("Sorry! Something went wrong", NotificationType.ERROR);
+                return RedirectToAction("Index", "Home");
             }
 
             var transactions = db.Transactions.Where(f => f.Job.JobID == id);
@@ -40,9 +46,15 @@ namespace SecureSoftwareApplication.Controllers
         // GET: Files/Details/5
         public ActionResult Details(int id)
         {
+            if (getAccount() == null)
+            {
+                this.AddNotification("Sorry! You are not allowed to access this page", NotificationType.ERROR);
+                return RedirectToAction("Home", "Index");
+            }
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                this.AddNotification("Sorry! Something went wrong", NotificationType.ERROR);
+                return RedirectToAction("Index", "Home");
             }
             File file = db.Files.Find(id);
             if (file == null)
@@ -55,10 +67,16 @@ namespace SecureSoftwareApplication.Controllers
         // GET: Files/Create
         public ActionResult Create(int id)
         {
+            if (getAccount() == null)
+            {
+                this.AddNotification("Sorry! You are not allowed to access this page", NotificationType.ERROR);
+                return RedirectToAction("Home", "Index");
+            }
 
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                this.AddNotification("Sorry! Something went wrong", NotificationType.ERROR);
+                return RedirectToAction("Index", "Home");
             }
 
             var job = db.Jobs.Find(id);
@@ -91,6 +109,12 @@ namespace SecureSoftwareApplication.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(FileViewModel files)
         {
+            if (getAccount() == null)
+            {
+                this.AddNotification("Sorry! You are not allowed to access this page", NotificationType.ERROR);
+                return RedirectToAction("Home", "Index");
+            }
+
             if (ModelState.IsValid)
             {
                 File addFile = new Models.File()
@@ -154,9 +178,16 @@ namespace SecureSoftwareApplication.Controllers
         // GET: Files/Delete/5
         public ActionResult Delete(int? id)
         {
+            if (getAccount() == null)
+            {
+                this.AddNotification("Sorry! You are not allowed to access this page", NotificationType.ERROR);
+                return RedirectToAction("Home", "Index");
+            }
+
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+                this.AddNotification("Sorry! Something went wrong", NotificationType.ERROR);
             }
 
             File file = db.Files.Find(id);

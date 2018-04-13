@@ -26,9 +26,10 @@ namespace SecureSoftwareApplication.Models
         public JobType Type { get; set; }
 
         public State state { get; set; }
-
+        [Display(Name ="Authorised state")]
         public bool authorised { get; set; }
 
+        [Display(Name ="Public Access")]
         public bool isPublic { get; set; }
 
         public bool closed { get; set; }

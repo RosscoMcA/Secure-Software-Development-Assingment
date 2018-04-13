@@ -1,0 +1,26 @@
+To Run the application: 
+
+You will require Visual studio 2015 or above with facilities for ASP.net development & entity framework. You will also require microsoft ISS. When running the application, do not start up on a view as this may cause the system to crash.
+Start on a controller or any other page.
+
+Alternatively, I can host the application through azure web services at your request. 
+
+
+
+Default adminstrators account:
+
+Username: ActuallyAdmin1
+Password: Admin1!
+
+Default Employee account: 
+
+Username: Employee101
+Password: Employee456
+
+Other accounts will be shown, however they only repeat the capabilities of the above accounts respectively.
+
+Creating your own account.
+ - Should you wish to do so, please use a valid email address, as the application will require you to confirm your email as part of the sign up process. 
+
+Adding real files to the application. 
+- Should you wish to do so, any file will be accepted at the moment. Please do not send files of a significant size (above 1Gb) as this will incur a charge on my account.

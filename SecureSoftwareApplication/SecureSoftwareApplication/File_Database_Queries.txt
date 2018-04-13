@@ -1,0 +1,19 @@
+Files SQL Script 
+
+Create table 
+
+CREATE TABLE [dbo].[Files] (
+    [FileID]    INT            IDENTITY (1, 1) NOT NULL,
+    [Contents]  NVARCHAR (MAX) NULL,
+    [PubDate]   DATETIME       NOT NULL,
+    [Source]    NVARCHAR (MAX) NULL,
+    [Folder]    NVARCHAR (MAX) NULL,
+    [Name]      NVARCHAR (MAX) NULL,
+    [TimeStamp] DATETIME       NOT NULL,
+    [Size]      INT            DEFAULT ((0)) NOT NULL,
+    CONSTRAINT [PK_dbo.Files] PRIMARY KEY CLUSTERED ([FileID] ASC)
+);
+
+Insert Statement
+
+INSERT INTO Files(FileID, Contents, PubDate, Source, Folder, Name, Timestamp, Size)

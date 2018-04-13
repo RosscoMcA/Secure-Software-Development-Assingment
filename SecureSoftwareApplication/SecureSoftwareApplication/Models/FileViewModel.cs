@@ -8,18 +8,19 @@ namespace SecureSoftwareApplication.Models
 {
     public class FileViewModel
     {
-
+        [Required]
         public string Contents { get; set; }
 
-       
 
-        public string Source { get; set; }
 
+
+        [Required]
         public string Folder { get; set; }
 
+        [Required]
         public string Name { get; set; }
 
-       
+        
         public int job { get; set; }
 
         public HttpPostedFileBase File { get; set; }

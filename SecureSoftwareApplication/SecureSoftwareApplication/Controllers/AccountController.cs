@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using SecureSoftwareApplication.Models;
+using SecureSoftwareApplication.Extensions;
 
 namespace SecureSoftwareApplication.Controllers
 {
@@ -30,6 +31,7 @@ namespace SecureSoftwareApplication.Controllers
 
             if (!isAdmin())
             {
+                this.AddNotification("Sorry! You do not have permisson to access this page!", NotificationType.ERROR);
                 return RedirectToAction("Index", "Home");
             }
 
@@ -44,6 +46,7 @@ namespace SecureSoftwareApplication.Controllers
         {
 
             if (!isAdmin())
+                this.AddNotification("Sorry! You do not have permisson to access this page!", NotificationType.ERROR);
                 return RedirectToAction("Index", "Home");
 
             if (ModelState.IsValid)
@@ -121,6 +124,7 @@ namespace SecureSoftwareApplication.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
+
             if (!ModelState.IsValid)
             {
                 return View(model);

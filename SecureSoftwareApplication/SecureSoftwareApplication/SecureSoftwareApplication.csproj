@@ -241,6 +241,7 @@
     <Compile Include="Controllers\RootController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Extensions\NotificationExtensions.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -318,19 +319,17 @@
     <Content Include="Views\Jobs\Create.cshtml" />
     <Content Include="Views\Jobs\Delete.cshtml" />
     <Content Include="Views\Jobs\Details.cshtml" />
-    <Content Include="Views\Jobs\Edit.cshtml" />
     <Content Include="Views\Jobs\Index.cshtml" />
     <Content Include="Views\Files\Create.cshtml" />
     <Content Include="Views\Files\Delete.cshtml" />
     <Content Include="Views\Files\Details.cshtml" />
-    <Content Include="Views\Files\Edit.cshtml" />
     <Content Include="Views\Files\Index.cshtml" />
     <Content Include="Views\JobTransactions\Create.cshtml" />
     <Content Include="Views\JobTransactions\Delete.cshtml" />
     <Content Include="Views\JobTransactions\Details.cshtml" />
-    <Content Include="Views\JobTransactions\Edit.cshtml" />
     <Content Include="Views\JobTransactions\Index.cshtml" />
     <Content Include="web.config" />
+    <Content Include="Views\Shared\_Notifications.cshtml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

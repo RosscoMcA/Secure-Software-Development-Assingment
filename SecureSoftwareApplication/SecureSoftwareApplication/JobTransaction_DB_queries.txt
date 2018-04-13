@@ -1,0 +1,15 @@
+JobTransaction Table Creation
+
+CREATE TABLE [dbo].[JobTransactions] (
+    [id]          INT      IDENTITY (1, 1) NOT NULL,
+    [TimeStamp]   DATETIME NOT NULL,
+    [File_FileID] INT      NULL,
+    [Job_JobID]   INT      NULL,
+    CONSTRAINT [PK_dbo.JobTransactions] PRIMARY KEY CLUSTERED ([id] ASC),
+    CONSTRAINT [FK_dbo.JobTransactions_dbo.Files_File_FileID] FOREIGN KEY ([File_FileID]) REFERENCES [dbo].[Files] ([FileID]),
+    CONSTRAINT [FK_dbo.JobTransactions_dbo.Jobs_Job_JobID] FOREIGN KEY ([Job_JobID]) REFERENCES [dbo].[Jobs] ([JobID])
+);
+
+JobTransaction Table Insertion 
+
+INSERT INTO JobTransactions(id, TimeStamp, File_FileID, Job_JobID)

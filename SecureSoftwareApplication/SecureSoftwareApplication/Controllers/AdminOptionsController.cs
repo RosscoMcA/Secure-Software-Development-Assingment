@@ -12,6 +12,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security.DataProtection;
+using SecureSoftwareApplication.Extensions;
 
 namespace SecureSoftwareApplication.Controllers
 {
@@ -27,7 +28,8 @@ namespace SecureSoftwareApplication.Controllers
         {
             if (isAdmin() == false || getAccount() == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.Forbidden, "You are not allowed here");
+                this.AddNotification("Sorry! You do not have permisson to access this page!", NotificationType.ERROR);
+                return RedirectToAction("Index", "Home");
             }
             return View(db.Accounts.ToList());
         }
@@ -38,11 +40,13 @@ namespace SecureSoftwareApplication.Controllers
 
             if (isAdmin() == false || getAccount() == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.Forbidden, "You are not allowed here");
+                this.AddNotification("Sorry! You do not have permisson to access this page!", NotificationType.ERROR);
+                return RedirectToAction("Index", "Home");
             }
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                this.AddNotification("Error, unexpected event", NotificationType.ERROR);
+                return RedirectToAction("Index", "Home");
             }
             Account account = db.Accounts.Find(id);
             if (account == null)
@@ -72,7 +76,8 @@ namespace SecureSoftwareApplication.Controllers
 
             if (isAdmin() == false || getAccount() == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.Forbidden, "You are not allowed here");
+                this.AddNotification("Sorry! You do not have permisson to access this page!", NotificationType.ERROR);
+                return RedirectToAction("Index", "Home");
             }
 
             if (ModelState.IsValid)
@@ -109,47 +114,7 @@ namespace SecureSoftwareApplication.Controllers
             return View(account);
         }
 
-        // GET: AdminOptions/Edit/5
-        public ActionResult Edit(string id)
-        {
-
-            if (isAdmin() == false || getAccount() == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.Forbidden, "You are not allowed here");
-            }
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Account account = db.Accounts.Find(id);
-            if (account == null)
-            {
-                return HttpNotFound();
-            }
-            return View(account);
-        }
-
-        // POST: AdminOptions/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Email, Name, PhoneNumber, UserName,AccountType")] Account account)
-        {
-
-            if (isAdmin() == false || getAccount() == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.Forbidden, "You are not allowed here");
-            }
-
-            if (ModelState.IsValid)
-            {
-                db.Entry(account).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(account);
-        }
+      
 
         // GET: AdminOptions/Delete/5
         public ActionResult Delete(string id)
@@ -157,12 +122,13 @@ namespace SecureSoftwareApplication.Controllers
 
             if (isAdmin() == false || getAccount() == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.Forbidden, "You are not allowed here");
+                this.AddNotification("Sorry! You do not have permisson to access this page!", NotificationType.ERROR);
+                return RedirectToAction("Index", "Home");
             }
 
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return RedirectToAction("Index", "Home");
             }
             Account account = db.Accounts.Find(id);
             if (account == null)
@@ -179,7 +145,8 @@ namespace SecureSoftwareApplication.Controllers
         {
             if (isAdmin() == false || getAccount() == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.Forbidden, "You are not allowed here");
+                this.AddNotification("Sorry! You do not have permisson to access this page!", NotificationType.ERROR);
+                return RedirectToAction("Index", "Home");
             }
             Account account = db.Accounts.Find(id);
             db.Accounts.Remove(account);
@@ -196,7 +163,8 @@ namespace SecureSoftwareApplication.Controllers
         {
             if (isAdmin() == false || getAccount() == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.Forbidden, "You are not allowed here");
+                this.AddNotification("Sorry! You do not have permisson to access this page!", NotificationType.ERROR);
+                return RedirectToAction("Index", "Home");
             }
 
             var account = db.Accounts.Find(id);
@@ -221,7 +189,8 @@ namespace SecureSoftwareApplication.Controllers
 
             if (isAdmin() == false || getAccount() == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.Forbidden, "You are not allowed here");
+                this.AddNotification("Sorry! You do not have permisson to access this page!", NotificationType.ERROR);
+                return RedirectToAction("Index", "Home");
             }
 
             var account = db.Accounts.Find(id);

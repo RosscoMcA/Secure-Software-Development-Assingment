@@ -1,0 +1,20 @@
+Job Table Creation
+
+CREATE TABLE [dbo].[Jobs] (
+    [JobID]       INT            IDENTITY (1, 1) NOT NULL,
+    [Start]       DATETIME       NOT NULL,
+    [End]         DATETIME       NOT NULL,
+    [Type]        INT            NOT NULL,
+    [state]       INT            NOT NULL,
+    [authorised]  BIT            NOT NULL,
+    [isPublic]    BIT            NOT NULL,
+    [Destination] INT            NOT NULL,
+    [Author_Id]   NVARCHAR (128) NULL,
+    [closed]      BIT            DEFAULT ((0)) NOT NULL,
+    CONSTRAINT [PK_dbo.Jobs] PRIMARY KEY CLUSTERED ([JobID] ASC),
+    CONSTRAINT [FK_dbo.Jobs_dbo.AspNetUsers_Author_Id] FOREIGN KEY ([Author_Id]) REFERENCES [dbo].[AspNetUsers] ([Id])
+);
+
+Job Table Insertion
+
+INSERT INTO Jobs(JobID, Start, End, Type, state, authorised, isPublic, Destination, Author_Id,closed)
