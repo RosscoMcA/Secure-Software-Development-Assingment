@@ -17,7 +17,7 @@ namespace SecureSoftwareApplication.Controllers
         /// Finalises the jobs and counnts the file size of the total file set
         /// </summary>
         /// <param name="id">the id of the job to finalise </param>
-        /// <returns></returns>
+        /// <returns>Finalised job</returns>
         public ActionResult Finalise(int id)
         {
 
@@ -47,10 +47,14 @@ namespace SecureSoftwareApplication.Controllers
             return RedirectToAction("Index", "Jobs");
         }
 
-        // GET: JobTransactions
+        /// <summary>
+        /// Lists all job transactions for one specific job 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public ActionResult Index(int id)
         {
-
+            //if account is not logged in, then reject access to the page. 
             if (getAccount() == null)
             {
                 this.AddNotification("Sorry! You are not allowed to access this page", NotificationType.ERROR);
@@ -71,7 +75,11 @@ namespace SecureSoftwareApplication.Controllers
             }
         }
 
-        // GET: JobTransactions/Details/5
+        /// <summary>
+        /// Get the details of a single job transaction
+        /// </summary>
+        /// <param name="id">transaction id</param>
+        /// <returns></returns>
         public ActionResult Details(string id)
         {
             if (getAccount() == null)
@@ -100,7 +108,11 @@ namespace SecureSoftwareApplication.Controllers
 
        
 
-        // GET: JobTransactions/Delete/5
+        /// <summary>
+        /// Deletes a Job Transaction for the job
+        /// </summary>
+        /// <param name="id">the job transaction id</param>
+        /// <returns></returns>
         public ActionResult Delete(string id)
         {
             if (getAccount() == null)

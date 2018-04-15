@@ -20,8 +20,15 @@ namespace SecureSoftwareApplication
             BundleConfig.RegisterBundles(BundleTable.Bundles);
         }
 
+        /// <summary>
+        /// Method handles any errors of a specific nature 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e">the error in question</param>
         void Application_Error(object sender, EventArgs e)
         {
+
+            //If a XSS is detected, respond with a 403 Forbidden message
             if (typeof(System.Web.HttpRequestValidationException) == Server.GetLastError().GetType() || 
                 typeof(System.Web.HttpException) == Server.GetLastError().GetType())
             {

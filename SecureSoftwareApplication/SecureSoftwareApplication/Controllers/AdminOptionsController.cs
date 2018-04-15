@@ -23,7 +23,10 @@ namespace SecureSoftwareApplication.Controllers
     {
         
 
-        // GET: AdminOptions
+        /// <summary>
+        /// Displays a list of users allowed to access further functions of the system
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Index()
         {
             if (isAdmin() == false || getAccount() == null)
@@ -34,7 +37,11 @@ namespace SecureSoftwareApplication.Controllers
             return View(db.Accounts.ToList());
         }
 
-        // GET: AdminOptions/Details/5
+        /// <summary>
+        /// Gets the details of a single user
+        /// </summary>
+        /// <param name="id">The user selected</param>
+        /// <returns></returns>
         public ActionResult Details(string id)
         {
 
@@ -64,9 +71,11 @@ namespace SecureSoftwareApplication.Controllers
 
 
 
-        // POST: AdminOptions/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        /// <summary>
+        /// Creates a new user account based on the values entered by the administrator 
+        /// </summary>
+        /// <param name="account">the values of the new user</param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async System.Threading.Tasks.Task<ActionResult> Create([Bind(Include = "Email,Name,PhoneNumber,Username,AccountType, Password, ConfirmPassword")] RegisterViewModel account)
@@ -92,10 +101,11 @@ namespace SecureSoftwareApplication.Controllers
                     Name = account.Name
                 };
 
-                //Adds the admin to the database 
+                //Adds the new user to the database 
                 var userCreateResult = UserManager.Create(finalAccount, account.Password);
                 if (userCreateResult.Succeeded)
                 {
+                    //if the account creation succeeds, then send confirmation email to recipient 
                     var client = new DpapiDataProtectionProvider("ASP.NET Identity");
                     UserManager.UserTokenProvider = new DataProtectorTokenProvider<Account>(
                     client.Create("ASP.NET Identity"));
@@ -116,7 +126,11 @@ namespace SecureSoftwareApplication.Controllers
 
       
 
-        // GET: AdminOptions/Delete/5
+        /// <summary>
+        /// Deletes a selected user from the database
+        /// </summary>
+        /// <param name="id">the user to delete</param>
+        /// <returns></returns>
         public ActionResult Delete(string id)
         {
 
@@ -138,7 +152,11 @@ namespace SecureSoftwareApplication.Controllers
             return View(account);
         }
 
-        // POST: AdminOptions/Delete/5
+        /// <summary>
+        /// Deletes the account after confirmation
+        /// </summary>
+        /// <param name="id">the user to be removed</param>
+        /// <returns></returns>
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string id)

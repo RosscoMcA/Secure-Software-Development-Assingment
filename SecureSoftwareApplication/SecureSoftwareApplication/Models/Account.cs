@@ -12,5 +12,8 @@
 
     }
 
+    /// <summary>
+    /// Enum represents User roles
+    /// </summary>
     public enum AccountType { Admin, Employee}
 }

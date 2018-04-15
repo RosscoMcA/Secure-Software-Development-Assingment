@@ -17,7 +17,11 @@ namespace SecureSoftwareApplication.Controllers
     {
         
 
-        // GET: Files
+        /// <summary>
+        /// Displays a list of files uploaded to one job
+        /// </summary>
+        /// <param name="id">the job assosiated with these files</param>
+        /// <returns></returns>
         public ActionResult Index(int id)
         {
             if (getAccount() == null)
@@ -43,7 +47,11 @@ namespace SecureSoftwareApplication.Controllers
             return View(files);
         }
 
-        // GET: Files/Details/5
+        /// <summary>
+        /// Provides the details of the file
+        /// </summary>
+        /// <param name="id">The file selected</param>
+        /// <returns></returns>
         public ActionResult Details(int id)
         {
             if (getAccount() == null)
@@ -64,7 +72,11 @@ namespace SecureSoftwareApplication.Controllers
             return View(file);
         }
 
-        // GET: Files/Create
+        /// <summary>
+        /// Sets the values of the new files before it is sent to the user to enter their values
+        /// </summary>
+        /// <param name="id">The job assosiated with this file </param>
+        /// <returns></returns>
         public ActionResult Create(int id)
         {
             if (getAccount() == null)
@@ -101,9 +113,11 @@ namespace SecureSoftwareApplication.Controllers
             
         }
 
-        // POST: Files/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        /// <summary>
+        /// The creation of a new file entry 
+        /// </summary>
+        /// <param name="files">the values entered by the user for this file</param>
+        /// <returns></returns>
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -137,6 +151,7 @@ namespace SecureSoftwareApplication.Controllers
 
                 if (content != null)
                 {
+                    //Where a file exists in this entry, upload to cloud.
                     FileStorageService fss = new FileStorageService();
 
                     addFile.Source = fss.Upload(content);
@@ -175,7 +190,11 @@ namespace SecureSoftwareApplication.Controllers
 
         
 
-        // GET: Files/Delete/5
+        /// <summary>
+        /// Deletes a specific file from the database
+        /// </summary>
+        /// <param name="id">the file to remove</param>
+        /// <returns></returns>
         public ActionResult Delete(int? id)
         {
             if (getAccount() == null)

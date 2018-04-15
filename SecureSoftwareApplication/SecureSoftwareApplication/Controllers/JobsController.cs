@@ -15,10 +15,10 @@ namespace SecureSoftwareApplication.Controllers
     public class JobsController : RootController
     {
 
-               
-
-        // GET: Jobs
-        
+        /// <summary>
+        /// Displays a list of jobs to a user
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Index()
         {
             ViewBag.isAdmin = isAdmin();
@@ -52,7 +52,11 @@ namespace SecureSoftwareApplication.Controllers
             }
         }
 
-        // GET: Jobs/Details/5
+        /// <summary>
+        /// Displays the contents of the job selected 
+        /// </summary>
+        /// <param name="id">The job wish to be viewed</param>
+        /// <returns></returns>
         public ActionResult Details(int? id)
         {
             if (getAccount() == null)
@@ -84,9 +88,11 @@ namespace SecureSoftwareApplication.Controllers
             return View();
         }
 
-        // POST: Jobs/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        /// <summary>
+        /// Creates a new job to add files to
+        /// </summary>
+        /// <param name="job">The parameters of the job item entered by a user</param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "JobID,Start,End,Type,state,authorised,isPublic,Destination")] Job job)
@@ -110,7 +116,11 @@ namespace SecureSoftwareApplication.Controllers
         }
 
 
-        // GET: Jobs/Delete/5
+        /// <summary>
+        /// The job to delete from the database records
+        /// </summary>
+        /// <param name="id">the Job to delete</param>
+        /// <returns></returns>
         public ActionResult Delete(int? id)
         {
             if (getAccount() == null)
@@ -142,6 +152,11 @@ namespace SecureSoftwareApplication.Controllers
             return RedirectToAction("Index");
         }
 
+        /// <summary>
+        /// Authorises the publishing of the job before it is run by the main process
+        /// </summary>
+        /// <param name="id">The job to allow processing to</param>
+        /// <returns></returns>
         [Authorize]
         public ActionResult Authorise(int id)
         {
@@ -173,6 +188,11 @@ namespace SecureSoftwareApplication.Controllers
 
         }
 
+        /// <summary>
+        /// Denys the publishing of a job before it is run by the main process 
+        /// </summary>
+        /// <param name="id">The job to deny processing to</param>
+        /// <returns></returns>
         [Authorize]
         public ActionResult Deny (int id)
         {
